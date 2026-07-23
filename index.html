@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سالورين - القائمة الرقمية</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        saloren: {
+                            navy: '#1A365D',   /* الكحلي العميق من الشعار */
+                            gold: '#D97706',   /* الذهبي الشمسي */
+                            goldLight: '#FEF3C7',
+                            wave: '#4A7C59',
+                            softBlue: '#F0F7FF',
+                            cardBg: '#FFFFFF'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts (Cairo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background-color: #F8FAFC;
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Waves Background Motif */
+        .wave-bg {
+            background-image: radial-gradient(#1A365D 0.5px, transparent 0.5px), radial-gradient(#1A365D 0.5px, #f8fafc 0.5px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            opacity: 0.03;
+        }
+    </style>
+</head>
+<body class="text-slate-800 pb-16 relative min-h-screen">
+
+    <!-- Subtle Wave Motif Background -->
+    <div class="fixed inset-0 wave-bg pointer-events-none"></div>
+
+    <!-- Header Section -->
+    <header class="bg-gradient-to-b from-saloren-navy via-[#1E3A8A] to-saloren-navy text-white text-center pt-8 pb-8 px-4 shadow-xl rounded-b-[2.5rem] relative overflow-hidden border-b-4 border-amber-500">
+        <!-- Sun Accent Glow -->
+        <div class="absolute -top-10 left-1/2 -translate-x-1/2 w-48 h-48 bg-amber-400/10 rounded-full blur-2xl pointer-events-none"></div>
+
+        <!-- Logo Container -->
+        <div class="w-24 h-24 mx-auto bg-white rounded-full p-1.5 shadow-2xl mb-3 flex items-center justify-center border-2 border-amber-400 relative z-10">
+            <img src="logo.jpg" alt="SALOREN Logo" class="w-full h-full object-contain rounded-full" onerror="this.onerror=null; this.src='https://ui-avatars.com/api/?name=Saloren&background=1A365D&color=D97706';">
+        </div>
+
+        <h1 class="text-3xl font-extrabold tracking-wider text-amber-400 drop-shadow-sm">سالورين</h1>
+        <p class="text-slate-200 text-xs mt-1 font-semibold max-w-xs mx-auto">وجهة متكاملة تلبي احتياجاتكم وتمنحكم تجربة استثنائية</p>
+        
+        <a href="https://instagram.com/SALOREN.CAFE" target="_blank" class="inline-flex items-center gap-2 mt-4 bg-white/10 hover:bg-amber-50 hover:text-slate-900 text-white text-xs px-4 py-1.5 rounded-full backdrop-blur-md border border-white/20 transition-all duration-300 shadow-sm font-semibold">
+            <i class="fa-brands fa-instagram text-pink-400 text-sm"></i>
+            <span>SALOREN.CAFE</span>
+        </a>
+
+        <!-- Search Bar -->
+        <div class="mt-6 max-w-md mx-auto relative px-2 z-10">
+            <input type="text" id="searchInput" onkeyup="filterMenu()" placeholder="ابحث في قائمة الطعام..." 
+                class="w-full py-3 pr-11 pl-4 rounded-full text-slate-800 text-sm bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-amber-500 border border-slate-100 transition">
+            <i class="fa-solid fa-magnifying-glass absolute right-6 top-3.5 text-saloren-navy text-base"></i>
+        </div>
+    </header>
+
+    <!-- Categories Sticky Navigation -->
+    <nav class="sticky top-0 bg-white/95 backdrop-blur-md shadow-md z-50 my-3 py-2.5 border-b border-slate-100">
+        <div class="flex overflow-x-auto no-scrollbar gap-2 px-4 max-w-2xl mx-auto" id="categoryNav">
+            <button onclick="scrollToCat('fish')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-saloren-navy text-amber-400 shadow-md transition">🐟 الأسماك</button>
+            <button onclick="scrollToCat('meats')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-saloren-navy transition">🥩 اللحوم</button>
+            <button onclick="scrollToCat('sandwiches')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-saloren-navy transition">🥪 الساندويتشات</button>
+            <button onclick="scrollToCat('salads')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-saloren-navy transition">🥗 السلطات</button>
+            <button onclick="scrollToCat('sweets')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-saloren-navy transition">🍰 الحلويات</button>
+            <button onclick="scrollToCat('hot-drinks')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-saloren-navy transition">☕ مشروبات ساخنة</button>
+            <button onclick="scrollToCat('cold-drinks')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-saloren-navy transition">🍹 مشروبات باردة</button>
+            <button onclick="scrollToCat('hookah')" class="cat-btn whitespace-nowrap px-4 py-2 rounded-full text-xs font-bold bg-slate-100 text-slate-700 hover:bg-amber-50 hover:text-saloren-navy transition">💨 الأرجيلة</button>
+        </div>
+    </nav>
+
+    <!-- Menu Content -->
+    <main class="max-w-2xl mx-auto px-4 mt-6 space-y-8 relative z-10">
+
+        <!-- وجبات الأسماك -->
+        <section id="fish" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">🐟</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">وجبات الأسماك</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">شوربة سمك</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">30</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">جمبري مقلي</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">60</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">جمبري بالصوص</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">70</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">جمبري مشوي</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">70</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">جمبري بنيه</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">70</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">كالاماري مقلي</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">50</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-800">كالاماري محشي</h3>
+                        <p class="text-xs text-amber-700 mt-0.5">بصوص الثوم والليمون</p>
+                    </div>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">100</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-800">وجبة سمك مشوي</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">سمك دنيس طازج</p>
+                    </div>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">80</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-sm text-slate-800">وجبة سمك مقلي</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">حسب الموسم</p>
+                    </div>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">80</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">بوري مقلي / مشوي</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">60</span>
+                </div>
+                <div class="menu-item bg-gradient-to-r from-saloren-navy to-slate-800 text-white p-4 rounded-2xl shadow-md border border-amber-400/30 flex justify-between items-center md:col-span-2">
+                    <div>
+                        <h3 class="font-extrabold text-sm text-amber-400">✨ وجبة سالورين الخاصة</h3>
+                        <p class="text-xs text-slate-200 mt-0.5">تكفي لشخصين</p>
+                    </div>
+                    <span class="text-slate-900 font-black text-base bg-amber-400 px-3.5 py-1 rounded-xl">150</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- وجبات اللحوم -->
+        <section id="meats" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">🥩</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">وجبات اللحوم</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">دجاج على الفحم</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">35</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">وجبة شيش طاووق</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">40</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">وجبة كباب</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">35</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">وجبة مشاوي مشكل</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">80</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- الساندويتشات -->
+        <section id="sandwiches" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">🥪</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">الساندويتشات</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">تشكن بيتزا</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">25</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">دجاج بالكاري</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">20</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">دجاج بالذرة والثوم</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">25</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ستيك دجاج</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">20</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">شنسل</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">20</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">كباب</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">18</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">شيش طاووق</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">18</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم السلطات -->
+        <section id="salads" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">🥗</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">قسم السلطات</h2>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">حمص</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">06</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">متبل</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">06</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ملفوف أحمر</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">06</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ملفوف أبيض</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">05</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ذرة مايونيز</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">08</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">تركية</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">07</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">بقدونسية</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">07</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">شيبس</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">08</span>
+                </div>
+                <div class="menu-item bg-white p-3.5 rounded-xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">مخللات</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded-lg">08</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الحلويات -->
+        <section id="sweets" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">🍰</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">قسم الحلويات</h2>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-3 border-b pb-1">حلويات غربية</h3>
+                    <div class="space-y-2.5">
+                        <div class="menu-item flex justify-between items-center">
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-800">كريب</h4>
+                                <p class="text-xs text-slate-400">مكس / نيو تيلا / لوتس</p>
+                            </div>
+                            <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200">25 / 28 / 30</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center pt-2 border-t border-slate-50">
+                            <h4 class="font-bold text-sm text-slate-800">كنافة نيو تيلا</h4>
+                            <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-0.5 rounded-lg">25</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center pt-2 border-t border-slate-50">
+                            <h4 class="font-bold text-sm text-slate-800">حلا سالورين</h4>
+                            <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-0.5 rounded-lg">27</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center pt-2 border-t border-slate-50">
+                            <h4 class="font-bold text-sm text-slate-800">ايس كيك</h4>
+                            <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-0.5 rounded-lg">27</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center pt-2 border-t border-slate-50">
+                            <h4 class="font-bold text-sm text-slate-800">تشيز كيك</h4>
+                            <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-0.5 rounded-lg">25</span>
+                        </div>
+                        <div class="menu-item flex justify-between items-center pt-2 border-t border-slate-50">
+                            <h4 class="font-bold text-sm text-slate-800">كيك سالورين</h4>
+                            <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-0.5 rounded-lg">27</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                        <h3 class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-2 border-b pb-1">🍦 أيس كريم</h3>
+                        <div class="space-y-2">
+                            <div class="menu-item flex justify-between items-center"><span class="text-sm font-semibold">اسبشل</span><span class="font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded text-saloren-navy">27</span></div>
+                            <div class="menu-item flex justify-between items-center"><span class="text-sm font-semibold">حجم وسط</span><span class="font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded text-saloren-navy">20</span></div>
+                            <div class="menu-item flex justify-between items-center"><span class="text-sm font-semibold">صغير أطفال</span><span class="font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded text-saloren-navy">15</span></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
+                        <h3 class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-1 border-b pb-1">🎂 قوالب الكيك</h3>
+                        <p class="text-[10px] text-slate-400 mb-2">*(يرجى الحجز المسبق)*</p>
+                        <div class="space-y-2">
+                            <div class="menu-item flex justify-between items-center"><span class="text-sm font-semibold">حجم صغير</span><span class="font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded text-saloren-navy">80</span></div>
+                            <div class="menu-item flex justify-between items-center"><span class="text-sm font-semibold">حجم وسط</span><span class="font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded text-saloren-navy">100</span></div>
+                            <div class="menu-item flex justify-between items-center"><span class="text-sm font-semibold">حجم كبير</span><span class="font-bold text-xs bg-amber-100 px-2.5 py-0.5 rounded text-saloren-navy">140</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- المشروبات الساخنة -->
+        <section id="hot-drinks" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">☕</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">المشروبات الساخنة</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">هوت شوكلت</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">10</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">كابتشينو</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">07</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">شاي</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">07</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">قهوة S+D</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200">07 / 10</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">اسبرسو</h3>
+                    <span class="text-saloren-navy font-bold text-xs bg-amber-100 px-2.5 py-1 rounded-lg border border-amber-200">10 / 14</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">نسكافيه</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">10</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">جالكسي كافيه</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">25</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">لاتيه كراميل</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">25</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">زهورات بالعسل</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">10</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- المشروبات الباردة -->
+        <section id="cold-drinks" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">🍹</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">المشروبات الباردة</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ميلك شيك نيوتيلا</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">25</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ميلك شيك بلو بيري</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">25</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ميلك شيك بستاشيو</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">30</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ميلك شيك لوتس</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">27</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ميلك شيك كيندر</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">30</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ميلك شيك اوريو</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">30</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ايس كافيه</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">27</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ايس سبانيش لاتيه</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">27</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">ايس كراميل ميكاتو</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">25</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">فرابتشينو</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">27</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">وايت موكا</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">27</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">مشروب غازي</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">10</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">مشروب طاقة</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">15</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">عصير مانجا علب</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">08</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">عصير جوافة علب</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">08</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">عصير حبيبات</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">08</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-sky-50 opacity-50"></div>
+                    <h3 class="font-bold text-sm text-slate-800 relative z-10">مياه معدنية</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-sky-100 px-3 py-1 rounded-xl border border-sky-300 relative z-10">05</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- قسم الأرجيلة -->
+        <section id="hookah" class="menu-section scroll-mt-20">
+            <div class="flex items-center gap-2 mb-4 border-r-4 border-amber-500 pr-3">
+                <span class="text-xl">💨</span>
+                <h2 class="text-xl font-extrabold text-saloren-navy">قسم الأرجيلة</h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">أرجيلة فاخر</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">80</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center">
+                    <h3 class="font-bold text-sm text-slate-800">أرجيلة ميزو</h3>
+                    <span class="text-saloren-navy font-extrabold text-sm bg-amber-100 px-3 py-1 rounded-xl border border-amber-300">80</span>
+                </div>
+                <div class="menu-item bg-white p-4 rounded-2xl shadow-sm border border-slate-100 flex justify-between items-center relative overflow-hidden">
+                    <div class="absolute inset-0 bg-amber-50 opacity-40"></div>
+                    <h3 class="font-bold text-sm text-amber-950 relative z-10">أرجيلة بيت الأراجيل</h3>
+                    <span class="text-amber-950 font-extrabold text-sm bg-amber-200 px-3 py-1 rounded-xl border border-amber-400 relative z-10 hover:bg-amber-300">80</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-saloren-navy text-slate-300 text-center py-6 px-4 mt-12 border-t-2 border-amber-500">
+        <p class="text-sm font-bold text-amber-400">SALOREN Cafe & Resto</p>
+        <p class="text-[10px] mt-1">الأسعار المعروضة بالشيكل الإسرائيلي (₪)</p>
+        <p class="text-[10px] mt-3 opacity-70">© 2024 جميع الحقوق محفوظة لـ سالورين.</p>
+    </footer>
+
+    <!-- JavaScript for Interactions -->
+    <script>
+        // 1. Filter Menu Items based on Search Input
+        function filterMenu() {
+            let input = document.getElementById('searchInput').value.toLowerCase();
+            let items = document.getElementsByClassName('menu-item');
+            let sections = document.getElementsByClassName('menu-section');
+
+            // Loop through all menu items
+            for (let i = 0; i < items.length; i++) {
+                let itemName = items[i].getElementsByTagName('h3')[0];
+                if (!itemName) itemName = items[i].getElementsByTagName('h4')[0]; // Check h4 for sweets
+
+                if (itemName) {
+                    let textValue = itemName.textContent || itemName.innerText;
+                    // If matched, show item, otherwise hide
+                    if (textValue.toLowerCase().indexOf(input) > -1) {
+                        items[i].style.display = "";
+                    } else {
+                        items[i].style.display = "none";
+                    }
+                }
+            }
+
+            // Hide sections that have no visible items
+            for (let s = 0; s < sections.length; s++) {
+                let visibleItemsInSection = sections[s].querySelectorAll('.menu-item[style=""]');
+                if (visibleItemsInSection.length === 0 && input !== "") {
+                    sections[s].style.display = "none";
+                } else {
+                    sections[s].style.display = "";
+                }
+            }
+        }
+
+        // 2. Smooth Scroll to Category Section
+        function scrollToCat(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // 3. Highlight Active Category Button on Scroll
+        window.addEventListener('scroll', function() {
+            let fromTop = window.scrollY + 100; // Offset for sticky nav
+            let ns = document.querySelectorAll('section.menu-section');
+            let btns = document.querySelectorAll('.cat-btn');
+
+            ns.forEach(sec => {
+                let id = sec.getAttribute('id');
+                let btn = document.querySelector(`button[onclick="scrollToCat('${id}')"]`);
+                
+                if (
+                    sec.offsetTop <= fromTop &&
+                    sec.offsetTop + sec.offsetHeight > fromTop
+                ) {
+                    // Activate current button
+                    btns.forEach(b => b.classList.remove('bg-saloren-navy', 'text-amber-400'));
+                    btns.forEach(b => b.classList.add('bg-slate-100', 'text-slate-700'));
+                    btn.classList.add('bg-saloren-navy', 'text-amber-400');
+                    btn.classList.remove('bg-slate-100', 'text-slate-700');
+                    
+                    // Keep active button visible in the horizontal nav
+                    document.getElementById('categoryNav').scrollTo({
+                        left: btn.offsetLeft - 20,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
